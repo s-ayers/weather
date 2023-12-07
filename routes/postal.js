@@ -1,12 +1,20 @@
+const postalController = require('../controllers/postalController');
+const express = require('express');
+const router = express.Router();
+
+router.get('/:country/:postal', postalController.postal_get);
+
+module.exports = router;
+
 /**
  * @swagger
  * tags:
- *   name: GeoLocation
- *   description: The geolocation weather API
+ *   name: Postal
+ *   description: The postal weather API
  * /postal/{country}/{postal}:
  *   get:
  *     summary: Returns local weather for a given postal code (zip).
- *     tags: [Postal Code]
+ *     tags: [Postal]
  *     parameters:
  *       - in: path
  *         name: country
