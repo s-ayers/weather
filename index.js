@@ -2,6 +2,11 @@ const express = require('express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
+const cityRoutes = require('./routes/city');
+const geolocationRoutes = require('./routes/geolocation');
+const postalRoutes = require('./routes/postal');
+
+
 const options = {
   definition: {
     openapi: '3.1.0',
@@ -37,6 +42,14 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(specs)
 );
+
+app.use('/city', cityRoutes);
+app.use('/geolocation', geolocationRoutes);
+app.use('/postal', postalRoutes);
+
+app.get('*', (req, res) => {
+  res.redirect(302, '/api-docs');
+});
 
 app.listen(port, () => {
   console.log(`Weather app listening on port ${port}`)

@@ -1,3 +1,11 @@
+const cityController = require('../controllers/cityController');
+const express = require('express');
+const router = express.Router();
+
+router.get('/:country/:city', cityController.city_get);
+
+module.exports = router;
+
 /**
  * @swagger
  * tags:
