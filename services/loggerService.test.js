@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Unit tests for loggerService module.
+ */
 const loggerService = require('./loggerService')
 
 describe('loggerService', () => {

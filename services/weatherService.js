@@ -1,6 +1,11 @@
 const axios = require('axios')
 const config = require('../config.json')
 
+/**
+ * Formats a timestamp into a date string.
+ * @param {number} timestamp - The timestamp to format.
+ * @returns {string} The formatted date string.
+ */
 const formatDate = (timestamp) => {
   const date = new Date(timestamp * 1000)
 
@@ -32,14 +37,30 @@ const formatDate = (timestamp) => {
   return `${date.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`
 }
 
+/**
+ * Converts temperature from Kelvin to Fahrenheit.
+ * @param {number} temp - The temperature in Kelvin.
+ * @returns {number} The temperature in Fahrenheit.
+ */
 const convertKelvinToFahrenheit = (temp) => {
   return ((temp - 273.15) * 9 / 5) + 32
 }
 
+/**
+ * Converts temperature from Celsius to Fahrenheit.
+ * @param {number} temp - The temperature in Celsius.
+ * @returns {number} The temperature in Fahrenheit.
+ */
 const convertCelciusToFahrenheit = (temp) => {
   return (temp * 9 / 5) + 32
 }
 
+/**
+ * Determines the heat type based on temperature and units.
+ * @param {number} temp - The temperature.
+ * @param {string} [units=null] - The units of temperature. Defaults to the value in the config file.
+ * @returns {string} The heat type.
+ */
 const heatType = (temp, units = null) => {
   let description = 'hot'
   switch (units ?? config.units) {
@@ -66,6 +87,12 @@ const heatType = (temp, units = null) => {
   return description
 }
 
+/**
+ * Retrieves the weather forecast for a given latitude and longitude.
+ * @param {number} latitude - The latitude.
+ * @param {number} longitude - The longitude.
+ * @returns {Promise<Array>} A promise that resolves to an array of weather forecast objects.
+ */
 const weatherForecast = async (latitude, longitude) => {
   const weather = []
   const forecast = await axios.get('https://api.openweathermap.org/data/2.5/forecast', {
@@ -94,6 +121,11 @@ const weatherForecast = async (latitude, longitude) => {
   return weather
 }
 
+/**
+ * Builds a weather object based on the current weather data.
+ * @param {object} current - The current weather data.
+ * @returns {Promise<object>} A promise that resolves to the weather object.
+ */
 const weatherBuilder = async (current) => {
   const weather = {
     latitude: current.coord.lat,
@@ -107,6 +139,12 @@ const weatherBuilder = async (current) => {
   return weather
 }
 
+/**
+ * Retrieves the weather data based on geolocation coordinates.
+ * @param {number} latitude - The latitude.
+ * @param {number} longitude - The longitude.
+ * @returns {Promise<object>} A promise that resolves to the weather object.
+ */
 exports.geolocation = async (latitude, longitude) => {
   // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
   const current = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
@@ -121,6 +159,12 @@ exports.geolocation = async (latitude, longitude) => {
   return weatherBuilder(current.data)
 }
 
+/**
+ * Retrieves the weather data based on postal code.
+ * @param {string} country - The country code.
+ * @param {string} zip - The postal code.
+ * @returns {Promise<object>} A promise that resolves to the weather object.
+ */
 exports.postal = async (country, zip) => {
   // https://api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={API key}
   const current = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
@@ -134,6 +178,13 @@ exports.postal = async (country, zip) => {
   return weatherBuilder(current.data)
 }
 
+/**
+ * Retrieves the weather data based on city name and optional state code.
+ * @param {string} country - The country code.
+ * @param {string} city - The city name.
+ * @param {string} [state=null] - The state code. Defaults to null.
+ * @returns {Promise<object>} A promise that resolves to the weather object.
+ */
 exports.city = async (country, city, state) => {
   // https://api.openweathermap.org/data/2.5/weather?q={city name},{state code},{country code}&appid={API key}
   let countryState = ''
