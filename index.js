@@ -1,17 +1,7 @@
-
 /**
  * Main file for the Weather Express API application.
  *
  */
-
-/**
- * Configuration object for the Weather Express API application.
- * @typedef {Object} Config
- * @property {string} OPEN_WEATHER_API_KEY - The API key for accessing the OpenWeatherMap API.
- * @property {string} units - The units of measurement for the weather information.
- */
-
-
 
 /**
  * The main entry point of the Weather Express API application.
@@ -79,6 +69,12 @@ const main = (config) => {
   })
 }
 
+/**
+ * Configuration object for the Weather Express API application.
+ * @typedef {Object} Config
+ * @property {string} OPEN_WEATHER_API_KEY - The API key for accessing the OpenWeatherMap API.
+ * @property {string} units - The units of measurement for the weather information.
+ */
 const config = require('./config.json')
 if (!config.OPEN_WEATHER_API_KEY) {
   console.log('Please set the OPEN_WEATHER_API_KEY variable')
