@@ -1,11 +1,18 @@
+const config = require('./config.json');
+if (!config.OPEN_WEATHER_API_KEY) {
+  console.log('Please set the OPEN_WEATHER_API_KEY variable');
+  process.exit(1);
+}
+
 const express = require('express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
+const logger = require('./services/loggerService').logger;
+
 const cityRoutes = require('./routes/city');
 const geolocationRoutes = require('./routes/geolocation');
 const postalRoutes = require('./routes/postal');
-
 
 const options = {
   definition: {
@@ -37,6 +44,8 @@ const options = {
 const port = 3000;
 const specs = swaggerJsdoc(options);
 const app = express();
+
+app.use(logger);
 app.use(
   '/api-docs',
   swaggerUi.serve,

@@ -40,8 +40,6 @@ module.exports = router;
  *
  */
 
-
-
 /**
  * @swagger
  * components:
@@ -49,30 +47,52 @@ module.exports = router;
  *     Weather:
  *       type: object
  *       required:
- *         - title
- *         - author
- *         - finished
+ *         - latitude
+ *         - longitude
+ *         - date
+ *         - heat
+ *         - condition
+ *         - forecast
  *       properties:
- *         id:
+ *         latitude:
+ *           type: float
+ *           description: Latitude
+ *         longitude:
+ *           type: float
+ *           description: Longitude
+ *         date:
  *           type: string
- *           description: The auto-generated id of the book
- *         title:
+ *           description: String representation of date time
+ *         heat:
  *           type: string
- *           description: The title of your book
- *         author:
+ *           description: Description of temperature
+ *         condition:
  *           type: string
- *           description: The book author
- *         finished:
- *           type: boolean
- *           description: Whether you have finished reading the book
- *         createdAt:
- *           type: string
- *           format: date
- *           description: The date the book was added
+ *           description: Description of weather condition
+ *         forecast:
+ *           type: array
+ *           description: Array of weather forecast
  *       example:
- *         id: d5fE_asz
- *         title: The New Turing Omnibus
- *         author: Alexander K. Dewdney
- *         finished: false
- *         createdAt: 2020-03-10T04:05:06.157Z
+ *         latitude: 41.512
+ *         longitude: -87.9656
+ *         date: 2023-11-07 21:9:24
+ *         heat: moderate
+ *         condition: clear sky
+ *         forecast:
+ *          - heat: moderate
+ *            condition: few clouds
+ *            date: 2023-12-08 12:00:00
+ *          - heat: moderate
+ *            condition: light rain
+ *            date: 2023-12-09 12:00:00
+ *          - heat: moderate
+ *            condition: scattered clouds
+ *            date: 2023-12-10 12:00:00
+ *          - heat: moderate
+ *            condition: clear sky
+ *            date: 2023-12-11 12:00:00
+ *          - heat: moderate
+ *            condition: overcast clouds
+ *            date: 2023-12-12 12:00:00
+ *
  */
