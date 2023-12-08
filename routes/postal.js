@@ -1,10 +1,10 @@
-const postalController = require('../controllers/postalController');
-const express = require('express');
-const router = express.Router();
+const postalController = require('../controllers/postalController')
+const express = require('express')
+const router = express.Router()
 
-router.get('/:country/:postal', postalController.postal_get);
+router.get('/:country/:postal', postalController.postal_get)
 
-module.exports = router;
+module.exports = router
 
 /**
  * @swagger

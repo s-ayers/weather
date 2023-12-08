@@ -1,99 +1,97 @@
-
-const axios = require('axios');
-const config = require('../config.json');
+const axios = require('axios')
+const config = require('../config.json')
 
 const formatDate = (timestamp) => {
-  const date = new Date(timestamp * 1000);
+  const date = new Date(timestamp * 1000)
 
-  let month = date.getMonth();
+  let month = date.getMonth()
   if (month < 10) {
-    month = `0${month}`;
+    month = `0${month}`
   }
 
-  let day = date.getDate();
+  let day = date.getDate()
   if (day < 10) {
-    day = `0${day}`;
+    day = `0${day}`
   }
 
-  let hour = date.getHours();
+  let hour = date.getHours()
   if (hour < 10) {
-    hour = `0${hour}`;
+    hour = `0${hour}`
   }
 
-  let minute = date.getMinutes();
+  let minute = date.getMinutes()
   if (minute < 10) {
-    minute = `0${minute}`;
+    minute = `0${minute}`
   }
 
-  let second = date.getSeconds();
+  let second = date.getSeconds()
   if (second < 10) {
-    second = `0${second}`;
+    second = `0${second}`
   }
 
-  return `${date.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`;
+  return `${date.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`
 }
 
 const convertKelvinToFahrenheit = (temp) => {
-  return ((temp - 273.15) * 9 / 5) + 32;
+  return ((temp - 273.15) * 9 / 5) + 32
 }
 
 const convertCelciusToFahrenheit = (temp) => {
-  return (temp * 9 / 5) + 32;
+  return (temp * 9 / 5) + 32
 }
 
 const heatType = (temp) => {
-  let description = 'hot';
+  let description = 'hot'
   switch (config.units) {
     case 'imperial':
-      break;
+      break
 
     case 'metric':
-      temp = convertCelciusToFahrenheit(temp);
-      break;
+      temp = convertCelciusToFahrenheit(temp)
+      break
 
     case 'kelvin':
     default:
-      temp = convertKelvinToFahrenheit(temp);
-      break;
+      temp = convertKelvinToFahrenheit(temp)
+      break
   }
-
 
   if (temp < 80) {
-    description = 'moderate';
+    description = 'moderate'
   } else if (temp < 32) {
-    description = 'cold';
+    description = 'cold'
   }
 
-  return description;
+  return description
 }
 
 const weatherForecast = async (latitude, longitude) => {
-  const weather = [];
+  const weather = []
   const forecast = await axios.get('https://api.openweathermap.org/data/2.5/forecast', {
     params: {
       appid: config.OPEN_WEATHER_API_KEY,
       lat: latitude,
       lon: longitude,
-      units: config.units,
+      units: config.units
     }
-  });
+  })
 
   forecast.data.list.forEach((item) => {
-    const txt = item.dt_txt.split(' ');
+    const txt = item.dt_txt.split(' ')
     if (txt[1] !== '12:00:00') {
-      return;
+      return
     }
-    const future_weather = {
+    const future = {
       heat: heatType(item.main.temp),
       condition: item.weather[0].description,
-      date: item.dt_txt,
-    };
+      date: item.dt_txt
+    }
 
-    weather.push(future_weather);
-  });
+    weather.push(future)
+  })
 
-  return weather;
-};
+  return weather
+}
 
 const weatherBuilder = async (current) => {
   const weather = {
@@ -102,10 +100,10 @@ const weatherBuilder = async (current) => {
     date: formatDate(current.dt),
     heat: heatType(current.main.temp),
     condition: current.weather[0].description,
-    forecast: await weatherForecast(current.coord.lat, current.coord.lon),
-  };
+    forecast: await weatherForecast(current.coord.lat, current.coord.lon)
+  }
 
-  return weather;
+  return weather
 }
 
 exports.geolocation = async (latitude, longitude) => {
@@ -115,12 +113,12 @@ exports.geolocation = async (latitude, longitude) => {
       appid: config.OPEN_WEATHER_API_KEY,
       lat: latitude,
       lon: longitude,
-      units: config.units,
+      units: config.units
     }
-  });
+  })
 
-  return weatherBuilder(current.data);
-};
+  return weatherBuilder(current.data)
+}
 
 exports.postal = async (country, postal) => {
   // https://api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={API key}
@@ -128,28 +126,28 @@ exports.postal = async (country, postal) => {
     params: {
       appid: config.OPEN_WEATHER_API_KEY,
       units: config.units,
-      zip: `${postal},${country}`,
+      zip: `${postal},${country}`
     }
-  });
+  })
 
-  return weatherBuilder(current.data);
-};
+  return weatherBuilder(current.data)
+}
 
 exports.city = async (country, city, state) => {
   // https://api.openweathermap.org/data/2.5/weather?q={city name},{state code},{country code}&appid={API key}
-  let country_state = '';
+  let countryState = ''
   if (state) {
-    country_state = `${state},`;
+    countryState = `${state},`
   }
-  country_state += `${country}`;
+  countryState += `${country}`
 
   const current = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
     params: {
       appid: config.OPEN_WEATHER_API_KEY,
-      q: `${city},${country_state}`,
-      units: config.units,
+      q: `${city},${countryState}`,
+      units: config.units
     }
-  });
+  })
 
-  return weatherBuilder(current.data);
-};
+  return weatherBuilder(current.data)
+}
