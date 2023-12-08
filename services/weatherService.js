@@ -40,9 +40,9 @@ const convertCelciusToFahrenheit = (temp) => {
   return (temp * 9 / 5) + 32
 }
 
-const heatType = (temp) => {
+const heatType = (temp, units = null) => {
   let description = 'hot'
-  switch (config.units) {
+  switch (units ?? config.units) {
     case 'imperial':
       break
 
@@ -58,7 +58,8 @@ const heatType = (temp) => {
 
   if (temp < 80) {
     description = 'moderate'
-  } else if (temp < 32) {
+  }
+  if (temp < 32) {
     description = 'cold'
   }
 
@@ -120,13 +121,13 @@ exports.geolocation = async (latitude, longitude) => {
   return weatherBuilder(current.data)
 }
 
-exports.postal = async (country, postal) => {
+exports.postal = async (country, zip) => {
   // https://api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={API key}
   const current = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
     params: {
       appid: config.OPEN_WEATHER_API_KEY,
       units: config.units,
-      zip: `${postal},${country}`
+      zip: `${zip},${country}`
     }
   })
 
@@ -151,3 +152,9 @@ exports.city = async (country, city, state) => {
 
   return weatherBuilder(current.data)
 }
+
+exports.formatDate = formatDate;
+exports.convertKelvinToFahrenheit = convertKelvinToFahrenheit;
+exports.convertCelciusToFahrenheit = convertCelciusToFahrenheit;
+exports.heatType = heatType;
+exports.weatherForecast = weatherForecast;
