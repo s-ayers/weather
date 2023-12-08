@@ -1,10 +1,10 @@
-const geolocationController = require('../controllers/geolocationController');
-const express = require('express');
-const router = express.Router();
+const geolocationController = require('../controllers/geolocationController')
+const express = require('express')
+const router = express.Router()
 
-router.get('/:latitude/:longitude', geolocationController.geolocation_get);
+router.get('/:latitude/:longitude', geolocationController.geolocation_get)
 
-module.exports = router;
+module.exports = router
 
 /**
  * @swagger
