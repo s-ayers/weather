@@ -153,8 +153,8 @@ exports.city = async (country, city, state) => {
   return weatherBuilder(current.data)
 }
 
-exports.formatDate = formatDate;
-exports.convertKelvinToFahrenheit = convertKelvinToFahrenheit;
-exports.convertCelciusToFahrenheit = convertCelciusToFahrenheit;
-exports.heatType = heatType;
-exports.weatherForecast = weatherForecast;
+exports.formatDate = formatDate
+exports.convertKelvinToFahrenheit = convertKelvinToFahrenheit
+exports.convertCelciusToFahrenheit = convertCelciusToFahrenheit
+exports.heatType = heatType
+exports.weatherForecast = weatherForecast

@@ -1,7 +1,7 @@
 const loggerService = require('./loggerService')
 
 describe('loggerService', () => {
-  test('should export a logger function', () => {
+  it('should export a logger function', () => {
     expect(typeof loggerService.logger).toBe('function')
   })
 
