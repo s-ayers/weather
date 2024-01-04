@@ -65,7 +65,7 @@ const main = (config) => {
   })
 
   app.listen(port, () => {
-    console.log(`Weather app listening on port ${port}`)
+    console.log(`Weather app listening on http://localhost:${port}`)
   })
 }
 
